@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="PWB">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/PWB/BetterThanBrainv.1.1.4.zip!/" />
+      <root url="jar://$PROJECT_DIR$/PWB/BetterThanBrainv.1.1.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

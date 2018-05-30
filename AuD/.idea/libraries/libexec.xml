@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="libexec">
+    <CLASSES>
+      <root url="file:///usr/local/Cellar/batik/1.9/libexec" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file:///usr/local/Cellar/batik/1.9/libexec" recursive="false" />
+  </library>
+</component>

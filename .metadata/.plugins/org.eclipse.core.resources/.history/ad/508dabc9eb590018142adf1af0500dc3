@@ -1,0 +1,99 @@
+import java.util.ArrayList;
+
+import Game.Controller.EAlignment;
+import Game.Controller.IPlayerController;
+import Game.Logic.Base;
+import Game.Logic.GameInformation;
+import Game.Logic.Order;
+import Game.Logic.Virus;
+
+public class Ostwind implements IPlayerController {
+
+	@Override
+	public String getAuthor() {
+		return "Simon Gustavs";
+	}
+
+	@Override
+	public String getName() {
+		return "Der Ostwind";
+	}
+	
+	private Boolean checkPro(Base origin) {
+		if(origin.getCurProductionLevel()<3 && origin.getNumberOfViruses()>=20) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private Boolean checkDeff(Base origin, ArrayList<Virus> arg1) {
+		int i = 0;
+		
+		while(i < arg1.size()-1 && arg1.get(i).getTarget()!=origin) {
+			i++;
+		}
+		
+		if(i < arg1.size() && arg1.get(i).getTarget() == origin && (arg1.get(i).getNumberOfViruses() > origin.getNumberOfViruses()/*+arg1.get(i).getDuration()*origin.getCurProductionLevel()*/)) {
+			return true;
+		}
+
+		return false;
+	}
+	
+	private Boolean checkAtt(Base origin, Base target, GameInformation arg2) {
+		if(origin.getNumberOfViruses()>target.getNumberOfViruses()+arg2.getDistanceBetweenBases(origin, target)+2) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private Integer checkDist(Base origin, Base target, GameInformation arg2) {
+		if(target.getOwner() != EAlignment.Friendly) {
+			return arg2.getDistanceBetweenBases(origin, target);
+		}
+		
+		return 250;
+	}
+	
+	private Base searchTarget(Base origin, ArrayList<Base> arg0, int dist, GameInformation arg2) {
+		Base target = null;
+		int baseV = 10;
+		
+		for(int i=0; i< arg0.size(); ++i) {
+			if(dist > checkDist(origin, arg0.get(i), arg2) && baseV > arg0.get(i).getNumberOfViruses()) {
+				target = arg0.get(i);
+				dist = checkDist(origin, arg0.get(i), arg2);
+			}
+		}
+		
+		return target;
+	}
+	
+	private int checkAtt(Base origin, Base target, ArrayList<Virus> arg1, GameInformation arg2) {
+		if(target != null) {
+			
+		}
+		
+		return 0;
+	}
+
+	@Override
+	public Order think(ArrayList<Base> arg0, ArrayList<Virus> arg1, GameInformation arg2) {
+		Base origin = null;
+		Base target = null;
+		int j = arg0.size();
+		
+		for(int i=0; i < j; ++i) {
+			if(arg0.get(i).getOwner() == EAlignment.Friendly) {
+				origin = arg0.get(i);
+			}
+		}
+		
+		target = searchTarget(origin, arg0, 5, arg2);
+		
+		return null;
+	}
+
+}

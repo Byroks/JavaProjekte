@@ -1,0 +1,126 @@
+import java.util.ArrayList;
+
+import Game.Controller.EAlignment;
+import Game.Controller.IPlayerController;
+import Game.Logic.Base;
+import Game.Logic.GameInformation;
+import Game.Logic.Order;
+import Game.Logic.Virus;
+
+public class Ostwind implements IPlayerController {
+
+	@Override
+	public String getAuthor() {
+		return "Simon Gustavs";
+	}
+
+	@Override
+	public String getName() {
+		return "Der Ostwind";
+	}
+	
+	private Boolean checkPro(Base origin) {
+		if(origin.getCurProductionLevel()<3 && origin.getNumberOfViruses()>=20) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private Boolean checkDeff(Base origin, ArrayList<Virus> arg1) {
+		int i = 0;
+		
+		while(i < arg1.size()-1 && arg1.get(i).getTarget()!=origin) {
+			i++;
+		}
+		
+		if(i < arg1.size() && arg1.get(i).getTarget() == origin && (arg1.get(i).getNumberOfViruses() > origin.getNumberOfViruses()/*+arg1.get(i).getDuration()*origin.getCurProductionLevel()*/)) {
+			return true;
+		}
+
+		return false;
+	}
+	
+	private Boolean checkDist(Base origin, Base target, int dist, GameInformation arg2) {
+		return dist > arg2.getDistanceBetweenBases(origin, target);
+	}
+	
+	
+	private Base searchTarget(Base origin, ArrayList<Base> arg0, GameInformation arg2) {
+		Base target = null;
+		int baseV = 10;
+		int dist = 3;
+		
+		while(target == null){
+			while(dist < 15 && target == null) {
+				for(int i=0; i< arg0.size(); ++i) {
+					target = arg0.get(i);
+					if(target.getOwner() != EAlignment.Friendly) {
+						if(baseV > target.getNumberOfViruses() && checkDist(origin, target, dist, arg2)) {
+							System.out.println(target.getId());
+							return target;
+						}
+					}
+				}
+				dist += 3;
+			}
+			dist = 5;
+			baseV += 5;
+		}
+		
+		//System.out.println(target.getId());
+		return target;
+	}
+	
+	private int checkAtt(Base origin, Base target, ArrayList<Virus> arg1, GameInformation arg2) {
+		
+		
+		return 0;
+	}
+
+	@Override
+	public Order think(ArrayList<Base> arg0, ArrayList<Virus> arg1, GameInformation arg2) {
+		Base origin = null;
+		Base target = null;
+		int Vid = -1;
+		int j = arg0.size();
+		
+		for(int i=0; i < j; ++i) {
+			if(arg0.get(i).getOwner() == EAlignment.Friendly) {
+				origin = arg0.get(i);
+				break;
+			}
+		}
+		
+		target = searchTarget(origin, arg0, arg2);
+		
+		if(origin.getNumberOfViruses() > arg2.getDistanceBetweenBases(origin, target)+target.getNumberOfViruses()+5) {
+			System.out.println(origin.getId() + " greift " + target.getId() + " an.");
+			return new Order(origin, target, arg2.getDistanceBetweenBases(origin, target)+target.getNumberOfViruses()+5);	
+		}
+		
+		//Check Snatch
+		if(arg1 != null && target == null) {
+			for(int i=0; i <  arg1.size(); ++i) {
+				target = arg1.get(i).getTarget();
+				if(arg1.get(i).getOwner() == EAlignment.Enemy && target.getNumberOfViruses() < arg1.get(i).getNumberOfViruses() && target != origin) {
+					if(checkDist(origin, target, 20, arg2)) {
+						Vid = i;
+						break;
+					}
+				}
+				
+			}
+		}
+		
+		if(Vid > -1) {
+			System.out.println(origin.getId() + " " + target.getId() + " will snatchen");
+			if(origin.getNumberOfViruses() > (arg2.getDistanceBetweenBases(origin, target)-arg1.get(Vid).getDuration()+target.getNumberOfViruses()-arg1.get(Vid).getNumberOfViruses()+5)) {
+				return new Order(origin, target, (arg2.getDistanceBetweenBases(origin, target)-arg1.get(Vid).getDuration()+target.getNumberOfViruses()-arg1.get(Vid).getNumberOfViruses()+5));
+			}
+		}
+		
+		return null;
+	}
+
+}

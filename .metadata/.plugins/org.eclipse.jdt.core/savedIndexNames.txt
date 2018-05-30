@@ -1,0 +1,2 @@
+INDEX VERSION 1.130+/Users/sg/Documents/JavaProjekte/.metadata/.plugins/org.eclipse.jdt.core
+3632375275.index

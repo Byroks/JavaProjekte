@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="Game.Controller.IPlayerController"/>
+    <fullyQualifiedTypeName name="Game.Logic.Order"/>
+    <fullyQualifiedTypeName name="Game.Controller.EAlignment"/>
+</qualifiedTypeNameHistroy>
