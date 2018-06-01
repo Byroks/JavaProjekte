@@ -16,6 +16,7 @@
       <sourceFolder url="file://$MODULE_DIR$/RecursionToStack" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/SimpleTree" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/TPalindrome" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/MyBTree" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
